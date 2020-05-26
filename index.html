@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<style>
+</style>
+
+<html>
+
+<head></head>
+<body></body>
+
+<script>
+    function computerPlay(){
+        let rpsChoice = [
+            "Rock",
+            "Paper",
+            "Scissors"
+            ];
+        let computerPick = rpsChoice[Math.floor(Math.random() * rpsChoice.length)];
+        return computerPick;
+    }
+
+    function playRound (playerSelection, computerSelection){
+
+        if (playerSelection.toLowerCase() === computerSelection.toLowerCase()){
+            
+            let playerDrawChoice = playerSelection.toLowerCase().charAt(0).toUpperCase() 
+            + playerSelection.slice(1).toLowerCase();
+            let drawString = "Draw! You both chose " + computerSelection + ".";
+            return drawString;
+
+        } else if ((playerSelection.toLowerCase() === "rock" && computerSelection.toLowerCase() === "paper")
+            || (playerSelection.toLowerCase() === "paper" && computerSelection.toLowerCase() === "scissors")
+            || (playerSelection.toLowerCase() === "scissors" && computerSelection.toLowerCase() === "rock")){
+            
+            let playerLoseChoice = playerSelection.toLowerCase().charAt(0).toUpperCase() 
+            + playerSelection.slice(1).toLowerCase();
+            let loseString = "You Lose! " + computerSelection + " beats " + playerLoseChoice + ".";
+            return loseString;
+
+        } else if ((playerSelection.toLowerCase() === "rock" && computerSelection.toLowerCase() === "scissors")
+            || (playerSelection.toLowerCase() === "paper" && computerSelection.toLowerCase() === "rock")
+            || (playerSelection.toLowerCase() === "scissors" && computerSelection.toLowerCase() === "paper")){
+
+            let playerWinChoice = playerSelection.toLowerCase().charAt(0).toUpperCase() 
+            + playerSelection.slice(1).toLowerCase();
+            let winString = "You Win! " + playerWinChoice + " beats " + computerSelection + ".";
+            return winString;
+
+            }
+    }
+
+    let playerSelection = "Scissors";
+    let computerSelection= computerPlay();
+
+    console.log(playRound(playerSelection,computerSelection));
+
+</script>
+
+</html>
