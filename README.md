@@ -1,1 +1,1 @@
-I created a 5 round game of rock, paper, scissors that allows the user to play against the computer.
+I created a 5 round game of rock, paper, scissors that allows the user to play against the computer. I updated the user interface by implementing buttons to make choices in the game.

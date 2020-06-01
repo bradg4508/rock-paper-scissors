@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<style>
+    body{
+        font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+        background-color: rgb(206, 226, 255);
+    }
+
+    h1, h2{
+        text-align: center;
+        color: navy;
+    }    
+
+    button {
+        background-color: navy;
+        color: white;
+        padding: 15px;
+        margin: 15px;
+        border-radius: 10px;
+        width: 100px;
+        text-align: center;
+    }
+
+    button:hover{
+        background-color: rgb(0, 0, 180);
+    }
+
+    button:focus {
+        outline: none;
+    }
+
+    #playerPickButtons{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .scores{
+        color: navy;       
+    }
+
+    #revealPlayerScore{
+        position: absolute;
+        left: 200px;
+        top: 140px;
+        text-decoration: underline overline solid navy;
+    }
+
+    #revealComputerScore{
+        position: absolute;
+        right: 200px;
+        top: 140px;
+        text-decoration: underline overline solid navy;                
+    }
+
+    .results{
+        text-align: center;
+        margin: 10px;
+        color: white;
+    }
+
+    #resetButton{
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        margin: 50px;
+    }
+
+    #roundResult{
+        color: navy;
+    }
+
+    #endGameResult{
+        color: navy;
+        margin: 10px;
+        font-weight: bold;
+    }
+
+    span{
+        background-color: navy;
+        box-shadow: -20px 0 0px 0px navy, 20px 0 0px 0px navy;
+    }
+
+
+
+</style>
+
+<html>
+
+<head>
+    <title>Rock, Paper, Scissors Game</title>
+</head>
+
+<body>
+
+    <div id="container">
+
+        <h1>Rock, Paper, Scissors</h1>
+        <h2>First to 5 Points Wins</h2> 
+
+        <div id="playerPickButtons">
+            <button type="button" id="Rock">Rock</button>
+            <button type="button" id="Paper">Paper</button>
+            <button type="button" id="Scissors">Scissors</button>
+        </div>
+
+        <div class="scores">
+            <p id="revealPlayerScore">Player's Score: 0</p>
+            <p id="revealComputerScore">Computer's Score: 0</p>
+        </div>
+
+        <div class="results">
+            <p id="displayResult"><span>Round Result: </span></p>
+            <p id="roundResult"></p>
+            <p id="endGameResult"></p>
+        </div>
+
+        <div id="resetButton">
+            <button type="button" id="reset">Reset</buttton>
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+
+    let playerScore = 0;
+    let computerScore = 0;
+    let playerScoreText = document.getElementById("revealPlayerScore").textContent;
+    let computerScoreText = document.getElementById("revealComputerScore").textContent;
+
+    function computerPlay(){
+        let rpsChoice = [
+            "Rock",
+            "Paper",
+            "Scissors"
+            ];
+        let computerPick = rpsChoice[Math.floor(Math.random() * rpsChoice.length)];
+        return computerPick;
+    }
+
+    function playRound (playerSelection){
+        let computerSelection = computerPlay();
+
+        if (playerScore === 5 || computerScore === 5){
+            resetGame();
+        }
+
+        if (playerSelection === computerSelection){
+    
+            let drawString = "Draw! You both chose " + computerSelection + ".";
+            document.getElementById("roundResult").innerHTML = drawString;
+
+        } else if ((playerSelection === "Rock" && computerSelection === "Paper")
+            || (playerSelection === "Paper" && computerSelection === "Scissors")
+            || (playerSelection === "Scissors" && computerSelection=== "Rock")){
+
+            let loseString = "You lose! " + computerSelection + " beats " + playerSelection + ".";
+            computerScore++;
+            computerScoreText = "Computer's Score: " + computerScore;
+            document.getElementById("revealComputerScore").innerHTML = computerScoreText;
+            document.getElementById("roundResult").innerHTML = loseString;
+
+        } else if ((playerSelection === "Rock" && computerSelection === "Scissors")
+            || (playerSelection === "Paper" && computerSelection === "Rock")
+            || (playerSelection === "Scissors" && computerSelection === "Paper")){
+
+            let winString = "You win! " + playerSelection + " beats " + computerSelection + ".";
+            playerScore++;
+            playerScoreText = "Player's Score: " + playerScore;
+            document.getElementById("revealPlayerScore").innerHTML = playerScoreText;
+            document.getElementById("roundResult").innerHTML = winString;
+
+        }
+
+    }
+
+    function checkWinner(playerScore, computerScore){
+        if (playerScore === 5 || computerScore === 5){
+            buttons.forEach((button) => {
+                button.disabled = true;
+            });
+        
+            if (playerScore > computerScore){
+                document.getElementById("endGameResult").innerHTML = "You win the game! You have defeated the computer.";
+            } else if (playerScore < computerScore){
+                document.getElementById("endGameResult").innerHTML = "You lose the game! Better luck next time.";
+            } else {
+                document.getElementById("endGameResult").innerHTML ="It's a tie!";
+            }
+        }
+    }
+
+    function resetGame(){
+        playerScore = 0;
+        computerScore = 0;
+        document.getElementById("revealPlayerScore").innerHTML = "Player's Score: " + playerScore;
+        document.getElementById("revealComputerScore").innerHTML = "Computer's Score: " + computerScore;
+        document.getElementById("roundResult").innerHTML = "";
+        document.getElementById("endGameResult").innerHTML = "";
+        buttons.forEach((button) => {
+            button.disabled = false;
+        });
+    }
+
+    const buttons = document.querySelectorAll("#playerPickButtons button");
+    const resetButton = document.querySelector("#resetButton button");
+    buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+            playRound(button.id);
+            checkWinner(playerScore, computerScore);
+            resetButton.addEventListener("click", resetGame);
+        });
+    });
+
+</script>
+
+</html>
